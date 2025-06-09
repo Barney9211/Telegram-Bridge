@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  # Matrix Synapse HomeServer
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: synapse
+    restart: unless-stopped
+    environment:
+      - SYNAPSE_REPORT_STATS=no
+      # 你可以根據需要增加更多環境變數
+    volumes:
+      - ./synapse/data:/data
+    ports:
+      - "8008:8008"   # HTTP API
+      - "8448:8448"   # Federation port
+    networks:
+      - matrix-net
+
+  # mautrix-telegram bridge
+  mautrix-telegram:
+    image: dock.mau.dev/mautrix/telegram:latest
+    container_name: mautrix-telegram
+    restart: unless-stopped
+    depends_on:
+      - synapse
+    volumes:
+      - ./mautrix-telegram:/data
+    networks:
+      - matrix-net
+    # 不需對外開 port，橋接器只需跟 Synapse 溝通
+
+networks:
+  matrix-net:
+    driver: bridge
