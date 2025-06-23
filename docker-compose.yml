@@ -1,23 +1,21 @@
 version: "3.7"
-
 services:
-  # Matrix Synapse HomeServer
   synapse:
     image: matrixdotorg/synapse:latest
     container_name: synapse
     restart: unless-stopped
     environment:
       - SYNAPSE_REPORT_STATS=no
-      # 你可以根據需要增加更多環境變數
     volumes:
-      - ./synapse/data:/data
+      - ./synapse/data:/data               # Synapse 自己用
+      - ./mautrix-telegram:/data/mautrix-telegram   # 給 Synapse 讀 TG 註冊檔
+      - ./mautrix-discord:/data/mautrix-discord     # 給 Synapse 讀 Discord 註冊檔
     ports:
-      - "8008:8008"   # HTTP API
-      - "8448:8448"   # Federation port
+      - "8008:8008"
+      - "8448:8448"
     networks:
       - matrix-net
 
-  # mautrix-telegram bridge
   mautrix-telegram:
     image: dock.mau.dev/mautrix/telegram:latest
     container_name: mautrix-telegram
@@ -27,9 +25,18 @@ services:
     volumes:
       - ./mautrix-telegram:/data
     networks:
-      - matrix-net
-    # 不需對外開 port，橋接器只需跟 Synapse 溝通
+      - matrix-net               # ⬅️ 已經有
 
+  mautrix-discord:
+    image: dock.mau.dev/mautrix/discord:latest
+    container_name: mautrix-discord
+    restart: unless-stopped
+    depends_on:
+      - synapse                  # ⬅️ 加上，確保 Synapse 先起
+    volumes:
+      - ./mautrix-discord:/data
+    networks:
+      - matrix-net               # ⬅️ 一定要同一條網路，才能用 http://synapse:8008
 networks:
   matrix-net:
     driver: bridge

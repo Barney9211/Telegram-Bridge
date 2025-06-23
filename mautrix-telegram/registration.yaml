@@ -1,6 +1,6 @@
 id: telegram
-as_token: i8P_iiNiJDpO9l9kI5dbPk-8vnuoowQAj_72fLS8DNAlZ--bLso9YpjdSgQWhgqZ
-hs_token: VEly5zsx1U23OjIA9qJz-sBLXZxpEP4KAme8vzs8qiQaoejtHSKUo-dD8mRoBNI9
+as_token: #Your token
+hs_token: #Your token
 namespaces:
     users:
     - exclusive: true
@@ -9,9 +9,9 @@ namespaces:
       regex: '@telegrambot:tomorin\.com'
     aliases:
     - exclusive: true
-      regex: \#telegram_.*:tomorin\.com
+      regex: \#telegrammm_.*:tomorin\.com
 url: http://mautrix-telegram:29317
-sender_localpart: QJlpmHsN17OHqNVCm4drQc-yFhforN76GBLU_kbygvPUn1BoVKYUuF-5_VAsJbh5
+sender_localpart: _Md7qnG39M37zjV6n7ayJ_RFvNPB7vTsf-dvdgqH03SPvcBIFmIVK4vHbtcWwYPK
 rate_limited: false
 de.sorunome.msc2409.push_ephemeral: true
 receive_ephemeral: true
